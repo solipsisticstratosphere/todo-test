@@ -3,6 +3,7 @@
   margin: 0 auto;
   padding: 40px 20px 20px 20px;
   min-height: calc(100vh - 60px);
+  background-color: var(--bg-secondary);
 }
 
 .header {
@@ -20,8 +21,9 @@
 
 .header h1 {
   margin: 0;
-  color: #333;
+  color: var(--text-primary);
   font-size: 32px;
+  font-weight: 600;
 }
 
 .createButton {
@@ -29,62 +31,96 @@
   align-items: center;
   gap: 8px;
   padding: 12px 24px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background-color: var(--primary-color);
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: all 0.2s ease;
   white-space: nowrap;
+  box-shadow: 0 1px 3px var(--shadow);
 }
 
 .createButton:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+  background-color: var(--primary-hover);
+  box-shadow: 0 2px 8px var(--shadow-hover);
 }
 
 .filterButtons {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   flex-wrap: wrap;
 }
 
 .filterButton,
 .filterActive {
   padding: 8px 16px;
-  border: 2px solid #667eea;
-  border-radius: 5px;
-  background: white;
-  color: #667eea;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background-color: var(--bg-primary);
+  color: var(--text-secondary);
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: all 0.2s ease;
+  font-size: 14px;
 }
 
 .filterActive {
-  background: #667eea;
+  background-color: var(--primary-color);
   color: white;
+  border-color: var(--primary-color);
 }
 
 .filterButton:hover {
-  background: #667eea;
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+.filterChip,
+.filterChipActive {
+  padding: 6px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  background-color: var(--bg-primary);
+  color: var(--text-secondary);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 13px;
+  box-shadow: 0 1px 2px var(--shadow);
+}
+
+.filterChipActive {
+  background-color: var(--primary-color);
   color: white;
+  border-color: var(--primary-color);
+  box-shadow: 0 1px 3px rgba(37, 99, 235, 0.3);
+}
+
+.filterChip:hover {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+  box-shadow: 0 1px 3px var(--shadow-hover);
 }
 
 .taskFormContainer {
-  background: white;
+  background-color: var(--bg-primary);
   padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 1px 3px var(--shadow);
   margin-bottom: 30px;
+  border: 1px solid var(--border-color);
 }
 
 .taskFormContainer h2 {
   margin: 0 0 20px 0;
-  color: #333;
+  color: var(--text-primary);
   font-size: 24px;
+  font-weight: 600;
 }
 
 .taskForm {
@@ -100,30 +136,60 @@
 
 .formGroup label {
   margin-bottom: 8px;
-  color: #555;
+  color: var(--text-primary);
   font-weight: 500;
+  font-size: 14px;
 }
 
 .formGroup input,
-.formGroup textarea,
-.formGroup select {
+.formGroup textarea {
   padding: 12px;
-  border: 2px solid #e0e0e0;
-  border-radius: 5px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
   font-size: 14px;
   font-family: inherit;
-  transition: border-color 0.3s;
+  transition: all 0.2s ease;
+  background-color: var(--bg-primary);
+}
+
+.formGroup select {
+  padding: 12px 30px 12px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: inherit;
+  transition: all 0.2s ease;
+  background-color: var(--bg-primary);
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 16px;
 }
 
 .formGroup input:focus,
 .formGroup textarea:focus,
 .formGroup select:focus {
   outline: none;
-  border-color: #667eea;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.inputError {
+  border-color: #dc2626 !important;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1) !important;
+}
+
+.fieldError {
+  display: block;
+  color: #dc2626;
+  font-size: 12px;
+  margin-top: 4px;
+  font-weight: 500;
 }
 
 .formGroup textarea {
-  resize: vertical;
+  resize: none;
 }
 
 .formActions {
@@ -135,21 +201,21 @@
 .cancelButton {
   padding: 12px 24px;
   border: none;
-  border-radius: 5px;
+  border-radius: 6px;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: all 0.2s ease;
 }
 
 .submitButton {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background-color: var(--primary-color);
   color: white;
 }
 
 .submitButton:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+  background-color: var(--primary-hover);
+  box-shadow: 0 2px 8px var(--shadow-hover);
 }
 
 .submitButton:disabled {
@@ -158,12 +224,14 @@
 }
 
 .cancelButton {
-  background: #e0e0e0;
-  color: #333;
+  background-color: var(--bg-secondary);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
 }
 
 .cancelButton:hover {
-  background: #d0d0d0;
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
 }
 
 .tasksList {
@@ -173,16 +241,17 @@
 }
 
 .taskCard {
-  background: white;
+  background-color: var(--bg-primary);
   padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s, box-shadow 0.3s;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px var(--shadow);
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid var(--border-color);
 }
 
 .taskCard:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+  background-color: var(--bg-tertiary);
+  box-shadow: 0 2px 8px var(--shadow-hover);
 }
 
 .taskHeader {
@@ -194,8 +263,9 @@
 
 .taskHeader h3 {
   margin: 0;
-  color: #333;
+  color: var(--text-primary);
   font-size: 18px;
+  font-weight: 600;
   flex: 1;
   word-break: break-word;
 }
@@ -209,36 +279,37 @@
 .deleteButton {
   padding: 6px 12px;
   border: none;
-  border-radius: 5px;
+  border-radius: 6px;
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: all 0.2s ease;
 }
 
 .editButton {
-  background: #667eea;
+  background-color: var(--primary-color);
   color: white;
 }
 
 .editButton:hover {
-  background: #5568d3;
+  background-color: var(--primary-hover);
 }
 
 .deleteButton {
-  background: #f44336;
+  background-color: #dc2626;
   color: white;
 }
 
 .deleteButton:hover {
-  background: #da190b;
+  background-color: #b91c1c;
 }
 
 .taskDescription {
-  color: #666;
+  color: var(--text-secondary);
   margin: 0 0 15px 0;
   line-height: 1.6;
   word-break: break-word;
+  font-size: 14px;
 }
 
 .taskFooter {
@@ -249,33 +320,41 @@
 }
 
 .statusSelect {
-  padding: 6px 12px;
-  border: 2px solid #e0e0e0;
-  border-radius: 5px;
+  padding: 6px 30px 6px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: all 0.2s ease;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 16px;
 }
 
 .statusSelect.todo {
-  color: #ff9800;
-  border-color: #ff9800;
+  color: #ea580c;
+  border-color: #ea580c;
 }
 
 .statusSelect.inprogress {
-  color: #2196f3;
-  border-color: #2196f3;
+  color: #2563eb;
+  border-color: #2563eb;
 }
 
 .statusSelect.done {
-  color: #4caf50;
-  border-color: #4caf50;
+  color: #16a34a;
+  border-color: #16a34a;
 }
 
 .taskDate {
-  color: #999;
+  color: var(--text-muted);
   font-size: 12px;
+  font-weight: 500;
 }
 
 .loading,
@@ -283,16 +362,17 @@
   text-align: center;
   padding: 40px;
   font-size: 18px;
+  color: var(--text-secondary);
 }
 
 .error {
-  color: #f44336;
+  color: #dc2626;
 }
 
 .emptyState {
   text-align: center;
   padding: 60px 20px;
-  color: #999;
+  color: var(--text-muted);
   font-size: 18px;
 }
 

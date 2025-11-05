@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Eye, EyeOff } from 'lucide-react';
 import { loginUser, clearError } from '../../store/slices/authSlice';
+import { validateLoginForm, clearFieldError } from '../../utils/validation';
 import styles from './Auth.module.css';
 
 const Login = () => {
@@ -11,6 +12,7 @@ const Login = () => {
     password: '',
   });
   const [showPassword, setShowPassword] = useState(false);
+  const [validationErrors, setValidationErrors] = useState({});
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -28,11 +30,17 @@ const Login = () => {
     };
   }, [dispatch]);
 
+
   const handleChange = (e) => {
+    const { name, value } = e.target;
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: value,
     });
+
+    // Clear validation error for this field when user starts typing
+    setValidationErrors(clearFieldError(validationErrors, name));
+
     if (error) {
       dispatch(clearError());
     }
@@ -40,6 +48,14 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const errors = validateLoginForm(formData);
+    if (Object.keys(errors).length > 0) {
+      setValidationErrors(errors);
+      return;
+    }
+
+    setValidationErrors({});
     dispatch(loginUser(formData));
   };
 
@@ -57,8 +73,12 @@ const Login = () => {
               name="email"
               value={formData.email}
               onChange={handleChange}
+              className={validationErrors.email ? styles.inputError : ''}
               required
             />
+            {validationErrors.email && (
+              <span className={styles.fieldError}>{validationErrors.email}</span>
+            )}
           </div>
           <div className={styles.formGroup}>
             <label htmlFor="password">Password</label>
@@ -69,6 +89,7 @@ const Login = () => {
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
+                className={validationErrors.password ? styles.inputError : ''}
                 required
               />
               {formData.password.length > 0 && (
@@ -82,6 +103,9 @@ const Login = () => {
                 </button>
               )}
             </div>
+            {validationErrors.password && (
+              <span className={styles.fieldError}>{validationErrors.password}</span>
+            )}
           </div>
           <button type="submit" className={styles.btnPrimary} disabled={authLoading}>
             {authLoading ? 'Loading...' : 'Login'}

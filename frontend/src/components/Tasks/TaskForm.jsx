@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useCreateTask, useUpdateTask } from '../../hooks/useTasks';
+import { validateTaskForm, clearFieldError } from '../../utils/validation';
 import styles from './Tasks.module.css';
 
 const TaskForm = ({ editingTask, onSuccess, onCancel }) => {
@@ -8,6 +9,7 @@ const TaskForm = ({ editingTask, onSuccess, onCancel }) => {
     description: '',
     status: 'todo',
   });
+  const [validationErrors, setValidationErrors] = useState({});
 
   const createTask = useCreateTask();
   const updateTask = useUpdateTask();
@@ -24,15 +26,28 @@ const TaskForm = ({ editingTask, onSuccess, onCancel }) => {
     }
   }, [editingTask]);
 
+
   const handleChange = (e) => {
+    const { name, value } = e.target;
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: value,
     });
+
+    
+    setValidationErrors(clearFieldError(validationErrors, name));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const errors = validateTaskForm(formData);
+    if (Object.keys(errors).length > 0) {
+      setValidationErrors(errors);
+      return;
+    }
+
+    setValidationErrors({});
 
     try {
       if (editingTask) {
@@ -66,10 +81,14 @@ const TaskForm = ({ editingTask, onSuccess, onCancel }) => {
             name="title"
             value={formData.title}
             onChange={handleChange}
+            className={validationErrors.title ? styles.inputError : ''}
             required
             maxLength={200}
             placeholder="Enter task title"
           />
+          {validationErrors.title && (
+            <span className={styles.fieldError}>{validationErrors.title}</span>
+          )}
         </div>
 
         <div className={styles.formGroup}>
@@ -79,9 +98,15 @@ const TaskForm = ({ editingTask, onSuccess, onCancel }) => {
             name="description"
             value={formData.description}
             onChange={handleChange}
+            className={validationErrors.description ? styles.inputError : ''}
             rows={4}
+            maxLength={5000}
             placeholder="Enter task description (optional)"
+            style={{ resize: 'none' }}
           />
+          {validationErrors.description && (
+            <span className={styles.fieldError}>{validationErrors.description}</span>
+          )}
         </div>
 
         <div className={styles.formGroup}>
@@ -91,11 +116,15 @@ const TaskForm = ({ editingTask, onSuccess, onCancel }) => {
             name="status"
             value={formData.status}
             onChange={handleChange}
+            className={validationErrors.status ? styles.inputError : ''}
           >
             <option value="todo">To Do</option>
             <option value="in progress">In Progress</option>
             <option value="done">Done</option>
           </select>
+          {validationErrors.status && (
+            <span className={styles.fieldError}>{validationErrors.status}</span>
+          )}
         </div>
 
       <div className={styles.formActions}>

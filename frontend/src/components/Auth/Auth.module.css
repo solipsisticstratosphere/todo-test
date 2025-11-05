@@ -3,24 +3,26 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background-color: var(--bg-secondary);
   padding: 20px;
 }
 
 .authCard {
-  background: white;
+  background-color: var(--bg-primary);
   padding: 40px;
-  border-radius: 10px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px var(--shadow);
   width: 100%;
   max-width: 400px;
+  border: 1px solid var(--border-color);
 }
 
 .authCard h2 {
   margin: 0 0 30px 0;
   text-align: center;
-  color: #333;
+  color: var(--text-primary);
   font-size: 28px;
+  font-weight: 600;
 }
 
 .formGroup {
@@ -30,23 +32,39 @@
 .formGroup label {
   display: block;
   margin-bottom: 8px;
-  color: #555;
+  color: var(--text-primary);
   font-weight: 500;
+  font-size: 14px;
 }
 
 .formGroup input {
   width: 100%;
   padding: 12px;
-  border: 2px solid #e0e0e0;
-  border-radius: 5px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
   font-size: 14px;
-  transition: border-color 0.3s;
+  transition: all 0.2s ease;
   box-sizing: border-box;
+  background-color: var(--bg-primary);
 }
 
 .formGroup input:focus {
   outline: none;
-  border-color: #667eea;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.inputError {
+  border-color: #dc2626 !important;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1) !important;
+}
+
+.fieldError {
+  display: block;
+  color: #dc2626;
+  font-size: 12px;
+  margin-top: 4px;
+  font-weight: 500;
 }
 
 .passwordInputWrapper {
@@ -65,34 +83,37 @@
   background: none;
   border: none;
   cursor: pointer;
-  padding: 5px;
+  padding: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #666;
-  transition: color 0.3s;
+  color: var(--text-secondary);
+  transition: color 0.2s ease;
+  border-radius: 4px;
 }
 
 .passwordToggle:hover {
-  color: #667eea;
+  color: var(--primary-color);
+  background-color: var(--bg-tertiary);
 }
 
 .btnPrimary {
   width: 100%;
   padding: 12px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background-color: var(--primary-color);
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 6px;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  transition: transform 0.2s, opacity 0.2s;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px var(--shadow);
 }
 
 .btnPrimary:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+  background-color: var(--primary-hover);
+  box-shadow: 0 2px 8px var(--shadow-hover);
 }
 
 .btnPrimary:disabled {
@@ -101,26 +122,29 @@
 }
 
 .errorMessage {
-  background-color: #fee;
-  color: #c33;
+  background-color: #fef2f2;
+  color: #dc2626;
   padding: 12px;
-  border-radius: 5px;
+  border-radius: 6px;
   margin-bottom: 20px;
-  border-left: 4px solid #c33;
+  border: 1px solid #fecaca;
+  font-size: 14px;
 }
 
 .authLink {
   text-align: center;
   margin-top: 20px;
-  color: #666;
+  color: var(--text-secondary);
 }
 
 .authLink a {
-  color: #667eea;
+  color: var(--primary-color);
   text-decoration: none;
-  font-weight: 600;
+  font-weight: 500;
+  transition: color 0.2s ease;
 }
 
 .authLink a:hover {
+  color: var(--primary-hover);
   text-decoration: underline;
 }

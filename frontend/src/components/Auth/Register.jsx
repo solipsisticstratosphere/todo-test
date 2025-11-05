@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Eye, EyeOff } from 'lucide-react';
 import { registerUser, clearError } from '../../store/slices/authSlice';
+import { validateRegisterForm, clearFieldError } from '../../utils/validation';
 import styles from './Auth.module.css';
 
 const Register = () => {
@@ -12,7 +13,7 @@ const Register = () => {
     password: '',
     confirmPassword: '',
   });
-  const [localError, setLocalError] = useState('');
+  const [validationErrors, setValidationErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -32,12 +33,17 @@ const Register = () => {
     };
   }, [dispatch]);
 
+
   const handleChange = (e) => {
+    const { name, value } = e.target;
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: value,
     });
-    setLocalError('');
+
+   
+    setValidationErrors(clearFieldError(validationErrors, name));
+
     if (error) {
       dispatch(clearError());
     }
@@ -45,19 +51,16 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLocalError('');
 
-    if (formData.password !== formData.confirmPassword) {
-      setLocalError('Passwords do not match');
+    const errors = validateRegisterForm(formData);
+    if (Object.keys(errors).length > 0) {
+      setValidationErrors(errors);
       return;
     }
 
-    if (formData.password.length < 6) {
-      setLocalError('Password must be at least 6 characters');
-      return;
-    }
-
-    const { confirmPassword, ...registerData } = formData;
+    setValidationErrors({});
+    const registerData = { ...formData };
+    delete registerData.confirmPassword;
     dispatch(registerUser(registerData));
   };
 
@@ -65,7 +68,7 @@ const Register = () => {
     <div className={styles.authContainer}>
       <div className={styles.authCard}>
         <h2>Register</h2>
-        {(error || localError) && <div className={styles.errorMessage}>{error || localError}</div>}
+        {error && <div className={styles.errorMessage}>{error}</div>}
         <form onSubmit={handleSubmit}>
           <div className={styles.formGroup}>
             <label htmlFor="username">Username</label>
@@ -75,9 +78,12 @@ const Register = () => {
               name="username"
               value={formData.username}
               onChange={handleChange}
+              className={validationErrors.username ? styles.inputError : ''}
               required
-              minLength={3}
             />
+            {validationErrors.username && (
+              <span className={styles.fieldError}>{validationErrors.username}</span>
+            )}
           </div>
           <div className={styles.formGroup}>
             <label htmlFor="email">Email</label>
@@ -87,8 +93,12 @@ const Register = () => {
               name="email"
               value={formData.email}
               onChange={handleChange}
+              className={validationErrors.email ? styles.inputError : ''}
               required
             />
+            {validationErrors.email && (
+              <span className={styles.fieldError}>{validationErrors.email}</span>
+            )}
           </div>
           <div className={styles.formGroup}>
             <label htmlFor="password">Password</label>
@@ -99,8 +109,8 @@ const Register = () => {
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
+                className={validationErrors.password ? styles.inputError : ''}
                 required
-                minLength={6}
               />
               {formData.password.length > 0 && (
                 <button
@@ -113,6 +123,9 @@ const Register = () => {
                 </button>
               )}
             </div>
+            {validationErrors.password && (
+              <span className={styles.fieldError}>{validationErrors.password}</span>
+            )}
           </div>
           <div className={styles.formGroup}>
             <label htmlFor="confirmPassword">Confirm Password</label>
@@ -123,6 +136,7 @@ const Register = () => {
                 name="confirmPassword"
                 value={formData.confirmPassword}
                 onChange={handleChange}
+                className={validationErrors.confirmPassword ? styles.inputError : ''}
                 required
               />
               {formData.confirmPassword.length > 0 && (
@@ -136,6 +150,9 @@ const Register = () => {
                 </button>
               )}
             </div>
+            {validationErrors.confirmPassword && (
+              <span className={styles.fieldError}>{validationErrors.confirmPassword}</span>
+            )}
           </div>
           <button type="submit" className={styles.btnPrimary} disabled={authLoading}>
             {authLoading ? 'Loading...' : 'Register'}

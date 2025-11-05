@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, memo } from 'react';
 import { Plus } from 'lucide-react';
 import { useTasks, useDeleteTask, useUpdateTask } from '../../hooks/useTasks';
 import TaskForm from './TaskForm';
@@ -43,14 +43,6 @@ const TaskList = () => {
     handleCloseModal();
   };
 
-  if (isLoading) {
-    return <div className={styles.loading}>Loading tasks...</div>;
-  }
-
-  if (error) {
-    return <div className={styles.error}>Error loading tasks: {error.message}</div>;
-  }
-
   return (
     <div className={styles.taskListContainer}>
       <div className={styles.header}>
@@ -63,25 +55,25 @@ const TaskList = () => {
         </div>
         <div className={styles.filterButtons}>
           <button
-            className={filter === '' ? styles.filterActive : styles.filterButton}
+            className={filter === '' ? styles.filterChipActive : styles.filterChip}
             onClick={() => setFilter('')}
           >
-            All
+            All Tasks
           </button>
           <button
-            className={filter === 'todo' ? styles.filterActive : styles.filterButton}
+            className={filter === 'todo' ? styles.filterChipActive : styles.filterChip}
             onClick={() => setFilter('todo')}
           >
             To Do
           </button>
           <button
-            className={filter === 'in progress' ? styles.filterActive : styles.filterButton}
+            className={filter === 'in progress' ? styles.filterChipActive : styles.filterChip}
             onClick={() => setFilter('in progress')}
           >
             In Progress
           </button>
           <button
-            className={filter === 'done' ? styles.filterActive : styles.filterButton}
+            className={filter === 'done' ? styles.filterChipActive : styles.filterChip}
             onClick={() => setFilter('done')}
           >
             Done
@@ -102,7 +94,11 @@ const TaskList = () => {
       </Modal>
 
       <div className={styles.tasksList}>
-        {tasks && tasks.length === 0 ? (
+        {isLoading ? (
+          <div className={styles.loading}>Loading tasks...</div>
+        ) : error ? (
+          <div className={styles.error}>Error loading tasks: {error.message}</div>
+        ) : tasks && tasks.length === 0 ? (
           <div className={styles.emptyState}>No tasks found. Create your first task!</div>
         ) : (
           tasks?.map((task) => (
@@ -149,4 +145,4 @@ const TaskList = () => {
   );
 };
 
-export default TaskList;
+export default memo(TaskList);
