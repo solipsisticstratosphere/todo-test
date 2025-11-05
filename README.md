@@ -11,7 +11,7 @@ A full-stack todo application with user authentication, built with React and Exp
 - **Real-time Updates**: Automatic UI updates with React Query
 - **Secure API**: Protected routes and input validation
 
-## 🛠 Tech Stack
+## Tech Stack
 
 ### Frontend
 - **React 19** - UI library
@@ -29,7 +29,7 @@ A full-stack todo application with user authentication, built with React and Exp
 - **bcryptjs** - Password hashing
 - **PostgreSQL** - Database
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 todo-test/
@@ -59,7 +59,7 @@ todo-test/
 └── README.md
 ```
 
-## 🛠 Installation & Setup
+## Installation & Setup
 
 ### Prerequisites
 - Node.js (v16 or higher)
@@ -150,7 +150,7 @@ npm run dev
 - `PUT /api/tasks/:id` - Update task
 - `DELETE /api/tasks/:id` - Delete task
 
-## 🔧 Available Scripts
+## Available Scripts
 
 ### Backend
 - `npm start` - Start production server
