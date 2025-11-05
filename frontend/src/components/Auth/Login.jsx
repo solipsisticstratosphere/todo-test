@@ -38,9 +38,7 @@ const Login = () => {
       [name]: value,
     });
 
-    // Clear validation error for this field when user starts typing
     setValidationErrors(clearFieldError(validationErrors, name));
-
     if (error) {
       dispatch(clearError());
     }

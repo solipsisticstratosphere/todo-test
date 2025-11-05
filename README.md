@@ -137,7 +137,7 @@ npm run dev
 3. Start the frontend: `cd frontend && npm run dev`
 4. Open [http://localhost:5173](http://localhost:5173) in your browser
 
-## 📡 API Endpoints
+## API Endpoints
 
 ### Authentication
 - `POST /api/auth/register` - User registration

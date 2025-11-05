@@ -40,8 +40,6 @@ const Register = () => {
       ...formData,
       [name]: value,
     });
-
-   
     setValidationErrors(clearFieldError(validationErrors, name));
 
     if (error) {
