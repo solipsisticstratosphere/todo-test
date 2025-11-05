@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useCreateTask, useUpdateTask } from '../../hooks/useTasks';
 import styles from './Tasks.module.css';
 
-const TaskForm = ({ editingTask, onCancelEdit }) => {
+const TaskForm = ({ editingTask, onSuccess, onCancel }) => {
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -19,6 +19,8 @@ const TaskForm = ({ editingTask, onCancelEdit }) => {
         description: editingTask.description || '',
         status: editingTask.status,
       });
+    } else {
+      setFormData({ title: '', description: '', status: 'todo' });
     }
   }, [editingTask]);
 
@@ -35,11 +37,13 @@ const TaskForm = ({ editingTask, onCancelEdit }) => {
     try {
       if (editingTask) {
         await updateTask.mutateAsync({ id: editingTask.id, data: formData });
-        onCancelEdit();
       } else {
         await createTask.mutateAsync(formData);
       }
       setFormData({ title: '', description: '', status: 'todo' });
+      if (onSuccess) {
+        onSuccess();
+      }
     } catch (error) {
       console.error('Error saving task:', error);
     }
@@ -47,15 +51,13 @@ const TaskForm = ({ editingTask, onCancelEdit }) => {
 
   const handleCancel = () => {
     setFormData({ title: '', description: '', status: 'todo' });
-    if (onCancelEdit) {
-      onCancelEdit();
+    if (onCancel) {
+      onCancel();
     }
   };
 
   return (
-    <div className={styles.taskFormContainer}>
-      <h2>{editingTask ? 'Edit Task' : 'Create New Task'}</h2>
-      <form onSubmit={handleSubmit} className={styles.taskForm}>
+    <form onSubmit={handleSubmit} className={styles.taskForm}>
         <div className={styles.formGroup}>
           <label htmlFor="title">Title *</label>
           <input
@@ -96,30 +98,27 @@ const TaskForm = ({ editingTask, onCancelEdit }) => {
           </select>
         </div>
 
-        <div className={styles.formActions}>
-          <button
-            type="submit"
-            className={styles.submitButton}
-            disabled={createTask.isPending || updateTask.isPending}
-          >
-            {createTask.isPending || updateTask.isPending
-              ? 'Saving...'
-              : editingTask
-              ? 'Update Task'
-              : 'Create Task'}
-          </button>
-          {editingTask && (
-            <button
-              type="button"
-              className={styles.cancelButton}
-              onClick={handleCancel}
-            >
-              Cancel
-            </button>
-          )}
-        </div>
-      </form>
-    </div>
+      <div className={styles.formActions}>
+        <button
+          type="submit"
+          className={styles.submitButton}
+          disabled={createTask.isPending || updateTask.isPending}
+        >
+          {createTask.isPending || updateTask.isPending
+            ? 'Saving...'
+            : editingTask
+            ? 'Update Task'
+            : 'Create Task'}
+        </button>
+        <button
+          type="button"
+          className={styles.cancelButton}
+          onClick={handleCancel}
+        >
+          Cancel
+        </button>
+      </div>
+    </form>
   );
 };
 

@@ -1,11 +1,14 @@
 import { useState } from 'react';
+import { Plus } from 'lucide-react';
 import { useTasks, useDeleteTask, useUpdateTask } from '../../hooks/useTasks';
 import TaskForm from './TaskForm';
+import Modal from '../Modal/Modal';
 import styles from './Tasks.module.css';
 
 const TaskList = () => {
   const [filter, setFilter] = useState('');
   const [editingTask, setEditingTask] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { data: tasks, isLoading, error } = useTasks(filter);
   const deleteTask = useDeleteTask();
@@ -23,10 +26,21 @@ const TaskList = () => {
 
   const handleEdit = (task) => {
     setEditingTask(task);
+    setIsModalOpen(true);
   };
 
-  const handleCancelEdit = () => {
+  const handleCreateNew = () => {
     setEditingTask(null);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setEditingTask(null);
+  };
+
+  const handleTaskSuccess = () => {
+    handleCloseModal();
   };
 
   if (isLoading) {
@@ -40,7 +54,13 @@ const TaskList = () => {
   return (
     <div className={styles.taskListContainer}>
       <div className={styles.header}>
-        <h1>My Tasks</h1>
+        <div className={styles.headerTop}>
+          <h1>My Tasks</h1>
+          <button className={styles.createButton} onClick={handleCreateNew}>
+            <Plus size={20} />
+            Create Task
+          </button>
+        </div>
         <div className={styles.filterButtons}>
           <button
             className={filter === '' ? styles.filterActive : styles.filterButton}
@@ -69,7 +89,17 @@ const TaskList = () => {
         </div>
       </div>
 
-      <TaskForm editingTask={editingTask} onCancelEdit={handleCancelEdit} />
+      <Modal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        title={editingTask ? 'Edit Task' : 'Create New Task'}
+      >
+        <TaskForm
+          editingTask={editingTask}
+          onSuccess={handleTaskSuccess}
+          onCancel={handleCloseModal}
+        />
+      </Modal>
 
       <div className={styles.tasksList}>
         {tasks && tasks.length === 0 ? (

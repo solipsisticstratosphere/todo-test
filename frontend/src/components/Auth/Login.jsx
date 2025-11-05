@@ -1,5 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Eye, EyeOff } from 'lucide-react';
+import { loginUser, clearError } from '../../store/slices/authSlice';
 import styles from './Auth.module.css';
 
 const Login = () => {
@@ -7,33 +10,37 @@ const Login = () => {
     email: '',
     password: '',
   });
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { authLoading, error, isAuthenticated } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/');
+    }
+  }, [isAuthenticated, navigate]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(clearError());
+    };
+  }, [dispatch]);
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
+    if (error) {
+      dispatch(clearError());
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
-    setLoading(true);
-
-    try {
-
-      // await dispatch(loginUser(formData));
-      // navigate('/');
-      console.log('Login:', formData);
-    } catch (err) {
-      setError(err.response?.data?.message || 'Login failed');
-    } finally {
-      setLoading(false);
-    }
+    dispatch(loginUser(formData));
   };
 
   return (
@@ -55,17 +62,29 @@ const Login = () => {
           </div>
           <div className={styles.formGroup}>
             <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
+            <div className={styles.passwordInputWrapper}>
+              <input
+                type={showPassword ? 'text' : 'password'}
+                id="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+              />
+              {formData.password.length > 0 && (
+                <button
+                  type="button"
+                  className={styles.passwordToggle}
+                  onClick={() => setShowPassword(!showPassword)}
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                >
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
+              )}
+            </div>
           </div>
-          <button type="submit" className={styles.btnPrimary} disabled={loading}>
-            {loading ? 'Loading...' : 'Login'}
+          <button type="submit" className={styles.btnPrimary} disabled={authLoading}>
+            {authLoading ? 'Loading...' : 'Login'}
           </button>
         </form>
         <p className={styles.authLink}>

@@ -1,17 +1,48 @@
 .taskListContainer {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 40px 20px 20px 20px;
+  min-height: calc(100vh - 60px);
 }
 
 .header {
   margin-bottom: 30px;
 }
 
+.headerTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
 .header h1 {
-  margin: 0 0 20px 0;
+  margin: 0;
   color: #333;
   font-size: 32px;
+}
+
+.createButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+
+.createButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
 }
 
 .filterButtons {
